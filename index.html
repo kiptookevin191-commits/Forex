@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0b0e14">
+  <title>EUR/USD AI Assistant</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <div class="brand">EUR/USD <span>AI</span></div>
+  <div id="data-timestamp" class="timestamp">Offline</div>
+</header>
+
+<nav class="tab-bar">
+  <button class="tab active" data-tab="dashboard">Dash</button>
+  <button class="tab" data-tab="analysis">Analysis</button>
+  <button class="tab" data-tab="tools">Tools</button>
+  <button class="tab" data-tab="backtest">Backtest</button>
+  <button class="tab" data-tab="journal">Journal</button>
+</nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard" class="tab-panel active">
+    <section class="card signal-card">
+      <h2>Signal</h2>
+      <div id="signal-display" class="signal signal-wait">WAIT</div>
+      <div class="confidence">Score: <span id="confidence-value">0</span>/100</div>
+    </section>
+
+    <section class="card">
+      <h2>Market Overview</h2>
+      <div class="grid-2">
+        <div class="metric"><span>Price</span><strong id="current-price">—</strong></div>
+        <div class="metric"><span>H1 Trend</span><strong id="trend-h1">—</strong></div>
+        <div class="metric"><span>RSI (14)</span><strong id="rsi-value">—</strong></div>
+        <div class="metric"><span>ADX (14)</span><strong id="adx-value">—</strong></div>
+        <div class="metric"><span>ATR (14)</span><strong id="atr-value">—</strong></div>
+        <div class="metric"><span>MACD</span><strong id="macd-status">—</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Trade Levels</h2>
+      <div class="grid-2">
+        <div class="metric"><span>Entry</span><strong id="entry-price">—</strong></div>
+        <div class="metric"><span>SL</span><strong id="stop-loss">—</strong></div>
+        <div class="metric"><span>TP1</span><strong id="tp1">—</strong></div>
+        <div class="metric"><span>TP2</span><strong id="tp2">—</strong></div>
+      </div>
+    </section>
+
+    <section class="card controls">
+      <button id="btn-start" class="btn btn-success">START</button>
+      <button id="btn-pause" class="btn btn-warning">PAUSE</button>
+      <button id="btn-stop" class="btn btn-danger">STOP</button>
+    </section>
+
+    <!-- CSV FALLBACK -->
+    <section class="card">
+      <h2>Manual Data Upload (If API fails)</h2>
+      <label class="btn btn-secondary upload-label">
+        Upload H1 CSV <input type="file" id="csv-h1" accept=".csv" hidden>
+      </label>
+      <label class="btn btn-secondary upload-label" style="margin-top:8px;">
+        Upload M15 CSV <input type="file" id="csv-m15" accept=".csv" hidden>
+      </label>
+    </section>
+  </section>
+
+  <!-- ANALYSIS -->
+  <section id="tab-analysis" class="tab-panel">
+    <section class="card">
+      <h2>AI Market Analyst</h2>
+      <div id="ai-analysis-text" class="ai-text">Press START to generate analysis.</div>
+    </section>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tab-tools" class="tab-panel">
+    <section class="card">
+      <h2>Lot Size Calculator</h2>
+      <label>Account Balance ($) <input type="number" id="tool-balance" value="1000"></label>
+      <label>Risk % <input type="number" id="tool-risk" value="0.25" step="0.01"></label>
+      <label>Stop Loss (pips) <input type="number" id="tool-sl-pips" value="20"></label>
+      <button id="btn-calc-lot" class="btn btn-primary">Calculate</button>
+      <div class="risk-output">Suggested Lot: <strong id="tool-lot-result">—</strong></div>
+    </section>
+  </section>
+
+  <!-- BACKTEST -->
+  <section id="tab-backtest" class="tab-panel">
+    <section class="card">
+      <h2>Backtesting Lab</h2>
+      <p class="hint">Upload CSV: time,open,high,low,close</p>
+      <label class="btn btn-secondary upload-label">
+        Upload Data <input type="file" id="backtest-csv" accept=".csv" hidden>
+      </label>
+      <div id="backtest-results" class="risk-output">No data loaded.</div>
+    </section>
+  </section>
+
+  <!-- JOURNAL -->
+  <section id="tab-journal" class="tab-panel">
+    <section class="card">
+      <h2>Trade Journal</h2>
+      <label>Direction <select id="journal-direction"><option value="BUY">BUY</option><option value="SELL">SELL</option></select></label>
+      <label>Lot Size <input type="number" id="journal-lot" step="0.01" value="0.01"></label>
+      <label>Entry <input type="number" id="journal-entry" step="0.00001"></label>
+      <label>Exit <input type="number" id="journal-exit" step="0.00001"></label>
+      <button id="btn-add-journal" class="btn btn-primary">Log Trade</button>
+      <button id="btn-export-journal" class="btn btn-secondary" style="margin-top:8px;">Export CSV</button>
+      
+      <div class="grid-2" style="margin-top:12px;">
+        <div class="metric"><span>Total</span><strong id="j-total">0</strong></div>
+        <div class="metric"><span>Win Rate</span><strong id="j-winrate">—</strong></div>
+      </div>
+      <div id="journal-list" class="trade-list"></div>
+    </section>
+  </section>
+</main>
+
+<script src="indicators.js"></script>
+<script src="strategy.js"></script>
+<script src="market-data.js"></script>
+<script src="risk-management.js"></script>
+<script src="trading-tools.js"></script>
+<script src="backtesting.js"></script>
+<script src="journal.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
